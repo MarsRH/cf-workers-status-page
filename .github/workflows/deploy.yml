@@ -26,7 +26,7 @@ jobs:
       with:
         apiToken: ${{ secrets.CF_API_TOKEN }}
         preCommands: |
-          npx wrangler kv namespace list | jq "."
+          npx wrangler kv namespace list | jq ".[] | select(.title == "KV_STATUS_PAGE") | .id"
           wrangler kv:namespace create KV_STATUS_PAGE || true
           export KV_NAMESPACE_ID=$(yarn wrangler kv:namespace list | jq -Rr '.[] | select(.title == "KV_STATUS_PAGE") | .id')
           echo "[env.production]" >> wrangler.toml
